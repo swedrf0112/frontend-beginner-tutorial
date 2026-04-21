@@ -1,0 +1,130 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  color: #182534;
+  background: #eef3f7;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.95), transparent 42%),
+    linear-gradient(180deg, #edf2f7 0%, #e5edf4 100%);
+}
+
+html.dark body {
+  background:
+    radial-gradient(circle at top, rgba(36, 78, 119, 0.28), transparent 38%),
+    linear-gradient(180deg, #07111c 0%, #0d1724 100%);
+}
+
+.site-shell {
+  @apply min-h-screen text-slate-800 dark:text-slate-100;
+}
+
+.site-frame {
+  @apply mx-auto max-w-[1400px] px-4 pb-10 md:px-6 xl:px-8;
+}
+
+.glass-panel {
+  @apply rounded-[28px] border border-white/50 bg-white/90 shadow-[0_20px_60px_rgba(16,37,63,0.12)] backdrop-blur;
+}
+
+.dark .glass-panel {
+  @apply border-slate-800/80 bg-slate-900/85 shadow-[0_26px_60px_rgba(0,0,0,0.35)];
+}
+
+.hero-gradient {
+  background: linear-gradient(120deg, #081320 0%, #123251 58%, #216598 100%);
+}
+
+.section-title {
+  @apply mb-5 text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400;
+}
+
+.page-enter {
+  animation: page-enter 0.72s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mock-photo {
+  background:
+    linear-gradient(140deg, rgba(255,255,255,0.12), transparent 35%),
+    linear-gradient(160deg, #0a1625 0%, #113250 55%, #1f628f 100%);
+}
+
+.research-photo {
+  background:
+    radial-gradient(circle at 20% 10%, rgba(255,255,255,0.15), transparent 30%),
+    linear-gradient(160deg, #0f1c2d 0%, #213e5c 45%, #c2ccd8 100%);
+}
+
+.toggle-pill {
+  @apply relative inline-flex h-[42px] w-[84px] items-center rounded-full border border-slate-300 bg-white px-[9px] text-[11px] font-semibold tracking-[0.08em] text-slate-600 transition-colors dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300;
+}
+
+.toggle-knob {
+  @apply absolute left-[6px] h-[28px] w-[42px] rounded-full bg-slate-950 shadow-md transition-transform duration-300 ease-out dark:bg-slate-100;
+}
+
+.toggle-label {
+  @apply relative z-[1] flex-1 text-center transition-colors duration-300;
+}
+
+.nav-dropdown-panel {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 0;
+  z-index: 40;
+  min-width: 300px;
+  border-radius: 22px;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  background: rgba(255, 255, 255, 0.98);
+  padding: 16px;
+  box-shadow: 0 28px 48px rgba(15, 23, 42, 0.16);
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s ease;
+}
+
+.dark .nav-dropdown-panel {
+  border-color: rgba(51, 65, 85, 0.95);
+  background: rgba(2, 6, 23, 0.98);
+  box-shadow: 0 24px 54px rgba(0, 0, 0, 0.42);
+}
+
+.nav-dropdown:hover .nav-dropdown-panel,
+.nav-dropdown:focus-within .nav-dropdown-panel {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.nav-dropdown-title {
+  @apply mb-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-400 dark:text-slate-500;
+}
+
+.nav-dropdown-item {
+  @apply rounded-2xl border border-slate-200/90 bg-slate-50/90 px-4 py-3 dark:border-slate-800 dark:bg-slate-900/85;
+}
