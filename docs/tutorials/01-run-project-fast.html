@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>01. 先把專案跑起來：不要先背全部資料夾</title>
+  <style>
+    :root {
+      --page-width: 920px;
+      --text: #1f2937;
+      --muted: #5b6574;
+      --border: #d9e2ec;
+      --panel: #f8fafc;
+      --code: #0f172a;
+      --accent: #8b1f25;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 40px 24px 72px;
+      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      color: var(--text);
+      background: #ffffff;
+      line-height: 1.8;
+    }
+    main {
+      max-width: var(--page-width);
+      margin: 0 auto;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      line-height: 1.35;
+      margin: 1.5em 0 0.6em;
+      page-break-after: avoid;
+    }
+    h1 { font-size: 34px; color: var(--accent); margin-top: 0; }
+    h2 { font-size: 26px; border-top: 1px solid var(--border); padding-top: 24px; }
+    h3 { font-size: 20px; }
+    p, li { font-size: 15px; }
+    p { margin: 0 0 1em; }
+    ul, ol { margin: 0 0 1.2em 1.4em; padding: 0; }
+    li { margin: 0.35em 0; }
+    pre {
+      margin: 0 0 1.2em;
+      padding: 16px 18px;
+      overflow-x: auto;
+      background: var(--code);
+      color: #e2e8f0;
+      border-radius: 14px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    code {
+      font-family: "SFMono-Regular", "Menlo", monospace;
+      font-size: 0.92em;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 0.1em 0.35em;
+      border-radius: 6px;
+    }
+    pre code {
+      background: transparent;
+      border: 0;
+      padding: 0;
+      border-radius: 0;
+      color: inherit;
+    }
+    strong { font-weight: 700; }
+    @media print {
+      body { padding: 0; }
+      h2, h3 { page-break-after: avoid; }
+      pre, ul, ol { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>01. 先把專案跑起來：不要先背全部資料夾</h1>
+<h2>這篇目標</h2>
+<p>先看到網站跑起來。</p>
+<p>很多新手一開始就去研究所有檔案，結果直接淹死。這一篇先只管：</p>
+<ul>
+<li>專案怎麼啟動</li>
+<li>首頁是哪個檔案</li>
+<li>改哪裡會立刻看到畫面變化</li>
+</ul>
+<h2>先做這三件事</h2>
+<pre><code class="language-bash">
+npm install
+
+npm run dev
+
+</code></pre>
+<p>接著打開瀏覽器看本地網址。</p>
+<h2>先認最重要的兩個位置</h2>
+<h3>1. package.json</h3>
+<h3>package.json</h3>
+<pre><code class="language-json">
+{
+
+  "name": "website-build",
+
+  "version": "1.0.0",
+
+  "description": "Beginner-friendly Next.js education brand tutorial project",
+
+  "type": "module",
+
+  "directories": {
+
+    "doc": "docs"
+
+  },
+
+  "scripts": {
+
+    "dev": "next dev --webpack",
+
+    "build": "next build --webpack",
+
+    "start": "next start",
+
+    "test": "vitest run",
+
+    "docs:build": "node tools/build-education-docs.js"
+
+  },
+
+  "keywords": [],
+
+  "author": "",
+
+  "license": "ISC",
+
+  "dependencies": {
+
+    "@tailwindcss/postcss": "^4.2.4",
+
+    "next": "^16.2.4",
+
+    "postcss": "^8.5.10",
+
+    "react": "^19.2.5",
+
+    "react-dom": "^19.2.5"
+
+  },
+
+  "devDependencies": {
+
+    "@testing-library/dom": "^10.4.1",
+
+    "@testing-library/jest-dom": "^6.9.1",
+
+    "@testing-library/react": "^16.3.0",
+
+    "@vitejs/plugin-react": "^4.7.0",
+
+    "jsdom": "^25.0.1",
+
+    "tailwindcss": "^4.1.14",
+
+    "vite": "^5.4.19",
+
+    "vitest": "^2.1.8"
+
+  }
+
+}
+
+</code></pre>
+<p>你現在先只看 scripts：</p>
+<ul>
+<li><code>npm run dev</code>：開發時最常用</li>
+<li><code>npm run build</code>：檢查正式版能不能打包</li>
+<li><code>npm run start</code>：跑正式站</li>
+</ul>
+<h3>2. app/page.js</h3>
+<h3>app/page.js</h3>
+<pre><code class="language-js">
+'use client'
+
+
+
+import { RevealSection } from '../src/components/reveal-section'
+
+import { useSite } from '../src/components/site-provider'
+
+
+
+function QuickLinkCard({ item }) {
+
+  return (
+
+    &lt;article className="rounded-3xl border border-white/14 bg-white/10 p-5 shadow-[0_16px_40px_rgba(0,0,0,0.18)] backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:bg-white/14"&gt;
+
+      &lt;div className="text-sm font-semibold uppercase tracking-[0.2em] text-sky-200"&gt;{item.eyebrow}&lt;/div&gt;
+
+      &lt;h3 className="mt-3 text-xl font-semibold text-white"&gt;{item.title}&lt;/h3&gt;
+
+      &lt;p className="mt-3 text-sm leading-7 text-slate-200"&gt;{item.desc}&lt;/p&gt;
+
+    &lt;/article&gt;
+
+  )
+
+}
+
+
+
+export default function HomePage() {
+
+  const { content } = useSite()
+
+  const page = content.home
+
+
+
+  return (
+
+    &lt;div className="page-stack"&gt;
+
+      &lt;RevealSection className="hero-panel"&gt;
+
+        &lt;div className="grid gap-8 xl:grid-cols-[1.18fr_0.82fr]"&gt;
+
+          &lt;div className="space-y-6"&gt;
+
+            &lt;div className="inline-flex items-center rounded-full border border-white/15 bg-white/8 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-sky-100"&gt;
+
+              {page.badge}
+
+            &lt;/div&gt;
+
+            &lt;h1 className="max-w-4xl text-5xl font-semibold leading-tight text-white md:text-6xl"&gt;
+
+              {page.title}
+
+            &lt;/h1&gt;
+
+            &lt;p className="max-w-3xl text-base leading-8 text-slate-200"&gt;{page.desc}&lt;/p&gt;
+
+            &lt;div className="flex flex-wrap gap-4"&gt;
+
+              &lt;a href="#programs" className="cta-primary"&gt;
+
+                {page.primaryAction}
+
+              &lt;/a&gt;
+
+              &lt;a href="#story" className="cta-secondary"&gt;
+
+                {page.secondaryAction}
+
+              &lt;/a&gt;
+
+            &lt;/div&gt;
+
+            &lt;div className="hero-stage"&gt;
+
+              &lt;div className="hero-stage-ribbon"&gt;{page.stage.ribbon}&lt;/div&gt;
+
+              &lt;div className="hero-stage-grid"&gt;
+
+                {page.stage.cards.map((card) =&gt; (
+
+                  &lt;div key={card} className="hero-stage-card"&gt;
+
+                    {card}
+
+                  &lt;/div&gt;
+
+                ))}
+
+              &lt;/div&gt;
+
+            &lt;/div&gt;
+
+          &lt;/div&gt;
+
+
+
+          &lt;div className="grid gap-4 self-center sm:grid-cols-2"&gt;
+
+            {page.quickLinks.map((item) =&gt; (
+
+              &lt;QuickLinkCard key={item.title} item={item} /&gt;
+
+            ))}
+
+          &lt;/div&gt;
+
+        &lt;/div&gt;
+
+      &lt;/RevealSection&gt;
+
+
+
+      &lt;div className="grid gap-6 xl:grid-cols-[1.08fr_0.92fr]"&gt;
+
+        &lt;RevealSection className="surface-card" delay={120}&gt;
+
+          &lt;div className="section-header"&gt;
+
+            &lt;div&gt;
+
+              &lt;div className="section-kicker"&gt;{page.newsKicker}&lt;/div&gt;
+
+              &lt;h2 className="section-title"&gt;{page.newsTitle}&lt;/h2&gt;
+
+            &lt;/div&gt;
+
+            &lt;span className="section-meta"&gt;{page.newsMeta}&lt;/span&gt;
+
+          &lt;/div&gt;
+
+          &lt;div className="space-y-3"&gt;
+
+            {page.news.map((item, index) =&gt; (
+
+              &lt;div key={item.title} className="list-card"&gt;
+
+                &lt;div&gt;
+
+                  &lt;div className="list-card-title"&gt;{item.title}&lt;/div&gt;
+
+                  &lt;div className="list-card-text"&gt;{item.desc}&lt;/div&gt;
+
+                &lt;/div&gt;
+
+                &lt;span className="list-card-index"&gt;{String(index + 1).padStart(2, '0')}&lt;/span&gt;
+
+              &lt;/div&gt;
+
+            ))}
+
+          &lt;/div&gt;
+
+        &lt;/RevealSection&gt;
+
+
+
+        &lt;RevealSection className="surface-card" delay={220}&gt;
+
+          &lt;div className="section-header"&gt;
+
+            &lt;div&gt;
+
+              &lt;div className="section-kicker"&gt;{page.storyKicker}&lt;/div&gt;
+
+              &lt;h2 className="section-title"&gt;{page.storyTitle}&lt;/h2&gt;
+
+            &lt;/div&gt;
+
+            &lt;span className="section-meta"&gt;{page.storyMeta}&lt;/span&gt;
+
+          &lt;/div&gt;
+
+          &lt;div className="grid gap-3"&gt;
+
+            {page.storyPoints.map((item) =&gt; (
+
+              &lt;div key={item.title} className="story-card"&gt;
+
+                &lt;div className="story-dot" /&gt;
+
+                &lt;div&gt;
+
+                  &lt;div className="story-title"&gt;{item.title}&lt;/div&gt;
+
+                  &lt;div className="story-text"&gt;{item.desc}&lt;/div&gt;
+
+                &lt;/div&gt;
+
+              &lt;/div&gt;
+
+            ))}
+
+          &lt;/div&gt;
+
+        &lt;/RevealSection&gt;
+
+      &lt;/div&gt;
+
+    &lt;/div&gt;
+
+  )
+
+}
+
+</code></pre>
+<p>在 Next.js App Router 裡：</p>
+<ul>
+<li><code>app/page.js</code> 就是首頁</li>
+<li>你改這個檔案，首頁就會變</li>
+</ul>
+<h2>先不要研究全部，只記這件事</h2>
+<p>如果你只想先試著改東西，先改：</p>
+<ul>
+<li><code>app/page.js</code></li>
+<li><code>app/globals.css</code></li>
+</ul>
+<p>這樣就夠了。</p>
+<h2>完成後你應該看到什麼</h2>
+<ol>
+<li>開發伺服器能跑起來</li>
+<li>首頁能打開</li>
+<li>你知道首頁主要來自 <code>app/page.js</code></li>
+</ol>
+  </main>
+</body>
+</html>

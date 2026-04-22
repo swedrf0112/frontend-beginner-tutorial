@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>15. 建立全站外殼：Header、Footer、共用版面</title>
+  <style>
+    :root {
+      --page-width: 920px;
+      --text: #1f2937;
+      --muted: #5b6574;
+      --border: #d9e2ec;
+      --panel: #f8fafc;
+      --code: #0f172a;
+      --accent: #8b1f25;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 40px 24px 72px;
+      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      color: var(--text);
+      background: #ffffff;
+      line-height: 1.8;
+    }
+    main {
+      max-width: var(--page-width);
+      margin: 0 auto;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      line-height: 1.35;
+      margin: 1.5em 0 0.6em;
+      page-break-after: avoid;
+    }
+    h1 { font-size: 34px; color: var(--accent); margin-top: 0; }
+    h2 { font-size: 26px; border-top: 1px solid var(--border); padding-top: 24px; }
+    h3 { font-size: 20px; }
+    p, li { font-size: 15px; }
+    p { margin: 0 0 1em; }
+    ul, ol { margin: 0 0 1.2em 1.4em; padding: 0; }
+    li { margin: 0.35em 0; }
+    pre {
+      margin: 0 0 1.2em;
+      padding: 16px 18px;
+      overflow-x: auto;
+      background: var(--code);
+      color: #e2e8f0;
+      border-radius: 14px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    code {
+      font-family: "SFMono-Regular", "Menlo", monospace;
+      font-size: 0.92em;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 0.1em 0.35em;
+      border-radius: 6px;
+    }
+    pre code {
+      background: transparent;
+      border: 0;
+      padding: 0;
+      border-radius: 0;
+      color: inherit;
+    }
+    strong { font-weight: 700; }
+    @media print {
+      body { padding: 0; }
+      h2, h3 { page-break-after: avoid; }
+      pre, ul, ol { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>15. 建立全站外殼：Header、Footer、共用版面</h1>
+<h2>先看 SiteChrome</h2>
+<h3>src/components/site-chrome.jsx</h3>
+<pre><code class="language-jsx">
+'use client'
+
+
+
+import { usePathname } from 'next/navigation'
+
+import { Footer } from './footer'
+
+import { Header } from './header'
+
+
+
+export function SiteChrome({ children }) {
+
+  const pathname = usePathname()
+
+
+
+  return (
+
+    &lt;div className="site-shell"&gt;
+
+      &lt;Header /&gt;
+
+      &lt;main key={pathname} className="page-transition shell-main"&gt;
+
+        {children}
+
+      &lt;/main&gt;
+
+      &lt;Footer /&gt;
+
+    &lt;/div&gt;
+
+  )
+
+}
+
+</code></pre>
+<h2>再看 Header</h2>
+<h3>src/components/header.jsx</h3>
+<pre><code class="language-jsx">
+'use client'
+
+
+
+import Link from 'next/link'
+
+import { usePathname } from 'next/navigation'
+
+import { navigation } from '../lib/site-content'
+
+import { useSite } from './site-provider'
+
+
+
+function navLabelClass(isActive) {
+
+  return `nav-link ${isActive ? 'nav-link-active' : ''}`
+
+}
+
+
+
+function TogglePill({ leftLabel, rightLabel, activeRight, onClick, ariaLabel }) {
+
+  const leftClass = activeRight ? 'text-slate-500 dark:text-slate-500' : 'text-slate-950 dark:text-slate-950'
+
+  const rightClass = activeRight ? 'text-white dark:text-slate-950' : 'text-slate-500 dark:text-slate-500'
+
+
+
+  return (
+
+    &lt;button type="button" aria-label={ariaLabel} onClick={onClick} className="toggle-pill"&gt;
+
+      &lt;span className={`toggle-knob ${activeRight ? 'translate-x-[30px]' : 'translate-x-0'}`} /&gt;
+
+      &lt;span className={`toggle-label ${leftClass}`}&gt;{leftLabel}&lt;/span&gt;
+
+      &lt;span className={`toggle-label ${rightClass}`}&gt;{rightLabel}&lt;/span&gt;
+
+    &lt;/button&gt;
+
+  )
+
+}
+
+
+
+export function Header() {
+
+  const pathname = usePathname()
+
+  const { content, language, setLanguage, theme, setTheme } = useSite()
+
+
+
+  return (
+
+    &lt;&gt;
+
+      &lt;div className="topbar"&gt;
+
+        &lt;div className="site-frame flex items-center justify-between py-3"&gt;
+
+          &lt;span&gt;{content.topbar}&lt;/span&gt;
+
+          &lt;span&gt;English / 繁中 / 简中 / 日本語&lt;/span&gt;
+
+        &lt;/div&gt;
+
+      &lt;/div&gt;
+
+
+
+      &lt;header className="sticky-header"&gt;
+
+        &lt;div className="site-frame grid grid-cols-1 gap-4 py-5 lg:grid-cols-[auto_1fr_auto] lg:items-center"&gt;
+
+          &lt;Link href="/" className="brand-mark"&gt;
+
+            Asteron
+
+          &lt;/Link&gt;
+
+
+
+          &lt;nav className="flex flex-wrap gap-2"&gt;
+
+            {navigation.map((item) =&gt; {
+
+              const isActive = pathname === item.href
+
+
+
+              return (
+
+                &lt;div key={item.href} className="nav-item group relative"&gt;
+
+                  &lt;Link href={item.href} className={navLabelClass(isActive)}&gt;
+
+                    {item.label[language]}
+
+                    &lt;span className="text-[10px] transition-transform duration-200 group-hover:rotate-180 group-focus-within:rotate-180"&gt;
+
+                      ▾
+
+                    &lt;/span&gt;
+
+                  &lt;/Link&gt;
+
+
+
+                  &lt;div className="nav-panel"&gt;
+
+                    &lt;div className="nav-panel-inner"&gt;
+
+                      &lt;div className="section-kicker mb-3"&gt;{item.title[language]}&lt;/div&gt;
+
+                      &lt;div className="grid gap-2"&gt;
+
+                        {item.items.map((subItem) =&gt; (
+
+                          &lt;div key={subItem.title.zh} className="nav-panel-card"&gt;
+
+                            &lt;div className="font-semibold text-slate-800 dark:text-slate-100"&gt;
+
+                              {subItem.title[language]}
+
+                            &lt;/div&gt;
+
+                            &lt;div className="mt-1 text-xs leading-6 text-slate-500 dark:text-slate-400"&gt;
+
+                              {subItem.desc[language]}
+
+                            &lt;/div&gt;
+
+                          &lt;/div&gt;
+
+                        ))}
+
+                      &lt;/div&gt;
+
+                    &lt;/div&gt;
+
+                  &lt;/div&gt;
+
+                &lt;/div&gt;
+
+              )
+
+            })}
+
+          &lt;/nav&gt;
+
+
+
+          &lt;div className="flex items-center gap-3 justify-self-start lg:justify-self-end"&gt;
+
+            &lt;TogglePill
+
+              ariaLabel="toggle language"
+
+              leftLabel="中文"
+
+              rightLabel="EN"
+
+              activeRight={language === 'en'}
+
+              onClick={() =&gt; setLanguage(language === 'zh' ? 'en' : 'zh')}
+
+            /&gt;
+
+            &lt;TogglePill
+
+              ariaLabel="toggle theme"
+
+              leftLabel={content.themeLight}
+
+              rightLabel={content.themeDark}
+
+              activeRight={theme === 'dark'}
+
+              onClick={() =&gt; setTheme(theme === 'light' ? 'dark' : 'light')}
+
+            /&gt;
+
+          &lt;/div&gt;
+
+        &lt;/div&gt;
+
+      &lt;/header&gt;
+
+    &lt;/&gt;
+
+  )
+
+}
+
+</code></pre>
+<h2>再看 Footer</h2>
+<h3>src/components/footer.jsx</h3>
+<pre><code class="language-jsx">
+'use client'
+
+
+
+import { useSite } from './site-provider'
+
+
+
+export function Footer() {
+
+  const { content } = useSite()
+
+
+
+  return (
+
+    &lt;footer className="mt-10 border-t border-slate-200/80 bg-slate-950 text-slate-300 dark:border-slate-800"&gt;
+
+      &lt;div className="site-frame flex flex-col gap-2 py-8 text-sm md:flex-row md:items-center md:justify-between"&gt;
+
+        &lt;span className="font-semibold tracking-wide"&gt;{content.footerBrand}&lt;/span&gt;
+
+        &lt;span&gt;{content.footerLinks}&lt;/span&gt;
+
+      &lt;/div&gt;
+
+    &lt;/footer&gt;
+
+  )
+
+}
+
+</code></pre>
+<h2>這一步你要理解的事情</h2>
+<p>不是每個頁面都自己寫一份導覽列。</p>
+<p>比較合理的做法是：</p>
+<ul>
+<li>layout 負責外框</li>
+<li>SiteChrome 負責共用殼</li>
+<li>Header / Footer 各自只管自己的內容</li>
+</ul>
+  </main>
+</body>
+</html>

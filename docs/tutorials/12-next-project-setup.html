@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>12. 建立 Next.js 專案：先認識 package.json、app 資料夾與 scripts</title>
+  <style>
+    :root {
+      --page-width: 920px;
+      --text: #1f2937;
+      --muted: #5b6574;
+      --border: #d9e2ec;
+      --panel: #f8fafc;
+      --code: #0f172a;
+      --accent: #8b1f25;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 40px 24px 72px;
+      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      color: var(--text);
+      background: #ffffff;
+      line-height: 1.8;
+    }
+    main {
+      max-width: var(--page-width);
+      margin: 0 auto;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      line-height: 1.35;
+      margin: 1.5em 0 0.6em;
+      page-break-after: avoid;
+    }
+    h1 { font-size: 34px; color: var(--accent); margin-top: 0; }
+    h2 { font-size: 26px; border-top: 1px solid var(--border); padding-top: 24px; }
+    h3 { font-size: 20px; }
+    p, li { font-size: 15px; }
+    p { margin: 0 0 1em; }
+    ul, ol { margin: 0 0 1.2em 1.4em; padding: 0; }
+    li { margin: 0.35em 0; }
+    pre {
+      margin: 0 0 1.2em;
+      padding: 16px 18px;
+      overflow-x: auto;
+      background: var(--code);
+      color: #e2e8f0;
+      border-radius: 14px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    code {
+      font-family: "SFMono-Regular", "Menlo", monospace;
+      font-size: 0.92em;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 0.1em 0.35em;
+      border-radius: 6px;
+    }
+    pre code {
+      background: transparent;
+      border: 0;
+      padding: 0;
+      border-radius: 0;
+      color: inherit;
+    }
+    strong { font-weight: 700; }
+    @media print {
+      body { padding: 0; }
+      h2, h3 { page-break-after: avoid; }
+      pre, ul, ol { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>12. 建立 Next.js 專案：先認識 package.json、app 資料夾與 scripts</h1>
+<h2>這篇要做什麼</h2>
+<p>你要先看懂一個 Next.js 專案最小會有哪些東西，不然後面每新增一個檔案都只會像背答案。</p>
+<h2>先看 package.json</h2>
+<h3>package.json</h3>
+<pre><code class="language-json">
+{
+
+  "name": "website-build",
+
+  "version": "1.0.0",
+
+  "description": "Beginner-friendly Next.js education brand tutorial project",
+
+  "type": "module",
+
+  "directories": {
+
+    "doc": "docs"
+
+  },
+
+  "scripts": {
+
+    "dev": "next dev --webpack",
+
+    "build": "next build --webpack",
+
+    "start": "next start",
+
+    "test": "vitest run",
+
+    "docs:build": "node tools/build-education-docs.js"
+
+  },
+
+  "keywords": [],
+
+  "author": "",
+
+  "license": "ISC",
+
+  "dependencies": {
+
+    "@tailwindcss/postcss": "^4.2.4",
+
+    "next": "^16.2.4",
+
+    "postcss": "^8.5.10",
+
+    "react": "^19.2.5",
+
+    "react-dom": "^19.2.5"
+
+  },
+
+  "devDependencies": {
+
+    "@testing-library/dom": "^10.4.1",
+
+    "@testing-library/jest-dom": "^6.9.1",
+
+    "@testing-library/react": "^16.3.0",
+
+    "@vitejs/plugin-react": "^4.7.0",
+
+    "jsdom": "^25.0.1",
+
+    "tailwindcss": "^4.1.14",
+
+    "vite": "^5.4.19",
+
+    "vitest": "^2.1.8"
+
+  }
+
+}
+
+</code></pre>
+<h2>初學者先看 3 個重點</h2>
+<h3>1. scripts 是你最常用的入口</h3>
+<ul>
+<li><code>npm run dev</code>：開發時使用</li>
+<li><code>npm run build</code>：打包檢查正式版本</li>
+<li><code>npm run start</code>：啟動 build 後的正式伺服器</li>
+<li><code>npm test</code>：跑測試</li>
+</ul>
+<h3>2. dependencies 是網站真正會用到的套件</h3>
+<p>這次最重要的是：</p>
+<ul>
+<li><code>next</code></li>
+<li><code>react</code></li>
+<li><code>react-dom</code></li>
+</ul>
+<h3>3. devDependencies 是開發輔助</h3>
+<p>像測試、Tailwind 與 Vitest 都屬於這層。</p>
+<h2>接著看 app 資料夾</h2>
+<p>在 Next.js App Router 裡，<code>app/</code> 很重要。</p>
+<p>你可以把它理解成：</p>
+<ul>
+<li><code>layout.js</code>：全站共用外殼</li>
+<li><code>page.js</code>：某一路由真正的頁面</li>
+</ul>
+<p>例如這次專案會有：</p>
+<pre><code class="language-text">
+app/
+
+├─ layout.js
+
+├─ page.js
+
+├─ quality/page.js
+
+├─ admissions/page.js
+
+└─ events/page.js
+
+</code></pre>
+  </main>
+</body>
+</html>

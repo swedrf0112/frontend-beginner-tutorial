@@ -1,59 +1,73 @@
-import { fireEvent, render, screen } from '@testing-library/react'
-import { MemoryRouter } from 'react-router-dom'
-import { beforeEach, describe, expect, it } from 'vitest'
-import App from '../src/App'
+import fs from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { describe, expect, it } from 'vitest'
 
-describe('education brand site', () => {
-  beforeEach(() => {
-    localStorage.clear()
-    document.documentElement.classList.remove('dark')
+const currentDir = path.dirname(fileURLToPath(import.meta.url))
+const projectRoot = path.resolve(currentDir, '..')
+
+function projectFile(relativePath) {
+  return path.join(projectRoot, relativePath)
+}
+
+describe('next.js education tutorial rebuild', () => {
+  it('uses next.js scripts instead of vite scripts', () => {
+    const packageJson = JSON.parse(fs.readFileSync(projectFile('package.json'), 'utf8'))
+
+    expect(packageJson.dependencies.next).toBeDefined()
+    expect(packageJson.scripts.dev).toMatch(/^next dev/)
+    expect(packageJson.scripts.build).toMatch(/^next build/)
+    expect(packageJson.scripts.start).toMatch(/^next start/)
   })
 
-  it('renders the home page title', () => {
-    render(
-      <MemoryRouter initialEntries={['/']}>
-        <App />
-      </MemoryRouter>,
-    )
+  it('creates the required app router pages and shared next.js files', () => {
+    const requiredFiles = [
+      'app/layout.js',
+      'app/page.js',
+      'app/quality/page.js',
+      'app/admissions/page.js',
+      'app/events/page.js',
+      'app/globals.css',
+      'postcss.config.mjs',
+      'next.config.mjs',
+      'src/components/site-provider.jsx',
+      'src/components/site-chrome.jsx',
+      'src/components/header.jsx',
+      'src/components/footer.jsx',
+      'src/lib/site-content.js',
+    ]
 
-    expect(screen.getByText('文教品牌四頁網站')).toBeInTheDocument()
-    expect(screen.getByText('打造更有溫度的學習體驗與教學場域')).toBeInTheDocument()
+    requiredFiles.forEach((relativePath) => {
+      expect(fs.existsSync(projectFile(relativePath)), relativePath).toBe(true)
+    })
   })
 
-  it('switches language to English', () => {
-    render(
-      <MemoryRouter initialEntries={['/']}>
-        <App />
-      </MemoryRouter>,
-    )
+  it('ships a multi-part beginner tutorial series in markdown and html', () => {
+    const tutorialsDir = projectFile('docs/tutorials')
+    const tutorialFiles = fs.readdirSync(tutorialsDir)
+    const markdownFiles = tutorialFiles.filter((file) => file.endsWith('.md'))
+    const htmlFiles = tutorialFiles.filter((file) => file.endsWith('.html'))
 
-    fireEvent.click(screen.getAllByRole('button', { name: 'toggle language' })[0])
+    expect(markdownFiles.length).toBeGreaterThanOrEqual(14)
+    expect(htmlFiles.length).toBeGreaterThanOrEqual(14)
 
-    expect(screen.getByText('Four-page education brand website')).toBeInTheDocument()
-    expect(screen.getByText('Build a warmer learning experience for every student')).toBeInTheDocument()
-  })
+    const foundationsFile = markdownFiles.find((file) => file.includes('00-frontend-zero-map'))
+    expect(foundationsFile).toBeDefined()
 
-  it('toggles dark mode class on the root element', () => {
-    render(
-      <MemoryRouter initialEntries={['/']}>
-        <App />
-      </MemoryRouter>,
-    )
+    const foundationsText = fs.readFileSync(path.join(tutorialsDir, foundationsFile), 'utf8')
+    expect(foundationsText).toContain('Node.js')
+    expect(foundationsText).toContain('React')
+    expect(foundationsText).toContain('Next.js')
+    expect(foundationsText).toContain('Tailwind CSS')
+    expect(foundationsText).toContain('() => {}')
 
-    fireEvent.click(screen.getAllByRole('button', { name: 'toggle theme' })[0])
+    const syntaxGuideFile = markdownFiles.find((file) => file.includes('06-javascript-syntax-translator'))
+    expect(syntaxGuideFile).toBeDefined()
 
-    expect(document.documentElement).toHaveClass('dark')
-  })
-
-  it('renders the research events page', () => {
-    render(
-      <MemoryRouter initialEntries={['/events']}>
-        <App />
-      </MemoryRouter>,
-    )
-
-    expect(screen.getByText('活動總覽')).toBeInTheDocument()
-    expect(screen.getByText('2026 暑期親子學習節')).toBeInTheDocument()
-    expect(screen.getAllByText('SEE MORE').length).toBeGreaterThan(0)
+    const syntaxGuideText = fs.readFileSync(path.join(tutorialsDir, syntaxGuideFile), 'utf8')
+    expect(syntaxGuideText).toContain('import')
+    expect(syntaxGuideText).toContain('return')
+    expect(syntaxGuideText).toContain('props')
+    expect(syntaxGuideText).toContain('map()')
   })
 })

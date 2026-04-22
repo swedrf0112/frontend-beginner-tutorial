@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>06. JavaScript / JSX 語法翻譯表：這些看不懂很正常</title>
+  <style>
+    :root {
+      --page-width: 920px;
+      --text: #1f2937;
+      --muted: #5b6574;
+      --border: #d9e2ec;
+      --panel: #f8fafc;
+      --code: #0f172a;
+      --accent: #8b1f25;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 40px 24px 72px;
+      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      color: var(--text);
+      background: #ffffff;
+      line-height: 1.8;
+    }
+    main {
+      max-width: var(--page-width);
+      margin: 0 auto;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      line-height: 1.35;
+      margin: 1.5em 0 0.6em;
+      page-break-after: avoid;
+    }
+    h1 { font-size: 34px; color: var(--accent); margin-top: 0; }
+    h2 { font-size: 26px; border-top: 1px solid var(--border); padding-top: 24px; }
+    h3 { font-size: 20px; }
+    p, li { font-size: 15px; }
+    p { margin: 0 0 1em; }
+    ul, ol { margin: 0 0 1.2em 1.4em; padding: 0; }
+    li { margin: 0.35em 0; }
+    pre {
+      margin: 0 0 1.2em;
+      padding: 16px 18px;
+      overflow-x: auto;
+      background: var(--code);
+      color: #e2e8f0;
+      border-radius: 14px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    code {
+      font-family: "SFMono-Regular", "Menlo", monospace;
+      font-size: 0.92em;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 0.1em 0.35em;
+      border-radius: 6px;
+    }
+    pre code {
+      background: transparent;
+      border: 0;
+      padding: 0;
+      border-radius: 0;
+      color: inherit;
+    }
+    strong { font-weight: 700; }
+    @media print {
+      body { padding: 0; }
+      h2, h3 { page-break-after: avoid; }
+      pre, ul, ol { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>06. JavaScript / JSX 語法翻譯表：這些看不懂很正常</h1>
+<h2>這篇目標</h2>
+<p>這一篇不是要你背語法定義。</p>
+<p>這一篇是把專案裡真的會看到的寫法，全部翻譯成人話。你之後看到不懂的語法，可以先回來查。</p>
+<h2>1. import</h2>
+<pre><code class="language-js">
+import Link from 'next/link'
+
+</code></pre>
+<p>白話翻譯：</p>
+<p>&gt; 我要把別的地方已經寫好的工具拿進來用。</p>
+<h2>2. export default function</h2>
+<pre><code class="language-jsx">
+export default function HomePage() {
+
+  return &lt;div&gt;首頁&lt;/div&gt;
+
+}
+
+</code></pre>
+<p>白話翻譯：</p>
+<p>&gt; 我現在定義一個元件，並把它當成這個檔案最主要輸出的內容。</p>
+<h2>3. return</h2>
+<p>在 React 元件裡，<code>return</code> 幾乎可以先翻成：</p>
+<p>&gt; 這個元件最後要交出去的畫面。</p>
+<h2>4. const</h2>
+<pre><code class="language-js">
+const title = 'Learning Studio'
+
+</code></pre>
+<p>白話翻譯：</p>
+<p>&gt; 我現在建立一個名稱叫 title 的變數。</p>
+<h2>5. 物件 object</h2>
+<pre><code class="language-js">
+const item = {
+
+  title: '課程介紹',
+
+  href: '/quality',
+
+}
+
+</code></pre>
+<p>白話翻譯：</p>
+<p>&gt; 我把相關資料包成一包，裡面有 title 和 href。</p>
+<h2>6. 陣列 array</h2>
+<pre><code class="language-js">
+const items = ['首頁', '課程介紹', '活動']
+
+</code></pre>
+<p>白話翻譯：</p>
+<p>&gt; 我把很多筆資料排成一串。</p>
+<h2>7. props</h2>
+<pre><code class="language-jsx">
+function Card({ title, description }) {
+
+  return (
+
+    &lt;div&gt;
+
+      &lt;h2&gt;{title}&lt;/h2&gt;
+
+      &lt;p&gt;{description}&lt;/p&gt;
+
+    &lt;/div&gt;
+
+  )
+
+}
+
+</code></pre>
+<p>白話翻譯：</p>
+<p>&gt; 這個元件需要外面傳進來的資料。這裡傳進來的是 title 和 description。</p>
+<h2>8. 大括號 <code>{ }</code> 在 JSX 裡是什麼</h2>
+<p>在 JSX 裡，大括號通常表示：</p>
+<p>&gt; 我要在 HTML 外觀裡插入 JavaScript 值。</p>
+<p>例如：</p>
+<pre><code class="language-jsx">
+&lt;h1&gt;{title}&lt;/h1&gt;
+
+</code></pre>
+<h2>9. 三元運算子 <code>條件 ? A : B</code></h2>
+<pre><code class="language-jsx">
+const label = dark ? 'Dark' : 'Light'
+
+</code></pre>
+<p>白話翻譯：</p>
+<p>&gt; 如果 dark 是 true，就用 Dark；不然用 Light。</p>
+<h2>10. <code>() =&gt; {}</code></h2>
+<p>這是箭頭函式。</p>
+<p>可以先翻成：</p>
+<p>&gt; 先定義一個稍後才會執行的小功能。</p>
+<h2>11. <code>onClick={() =&gt; ...}</code></h2>
+<pre><code class="language-jsx">
+&lt;button onClick={() =&gt; setOpen(true)}&gt;
+
+  打開
+
+&lt;/button&gt;
+
+</code></pre>
+<p>白話翻譯：</p>
+<p>&gt; 當按鈕被點擊時，執行裡面的程式。</p>
+<h2>12. <code>useState</code></h2>
+<pre><code class="language-jsx">
+const [open, setOpen] = useState(false)
+
+</code></pre>
+<p>白話翻譯：</p>
+<p>&gt; 我現在有一個叫 open 的狀態，一開始是 false。之後如果要改它，用 setOpen。</p>
+<h2>13. <code>useEffect</code></h2>
+<pre><code class="language-jsx">
+useEffect(() =&gt; {
+
+  localStorage.setItem('theme', theme)
+
+}, [theme])
+
+</code></pre>
+<p>白話翻譯：</p>
+<p>&gt; 當 theme 改變後，執行這段程式。</p>
+<h2>14. <code>map()</code></h2>
+<pre><code class="language-jsx">
+items.map((item) =&gt; (
+
+  &lt;li key={item.id}&gt;{item.title}&lt;/li&gt;
+
+))
+
+</code></pre>
+<p>白話翻譯：</p>
+<p>&gt; 把 items 裡每一筆資料都做成一個畫面區塊。</p>
+<h2>15. <code>key</code></h2>
+<p>在 React 裡，當你用 <code>map()</code> 產生多個元素時，通常要給 <code>key</code>。</p>
+<p>白話翻譯：</p>
+<p>&gt; 這個 key 是 React 用來分辨每一個項目的 id。</p>
+<h2>16. template string</h2>
+<pre><code class="language-js">
+const message = `目前主題是 ${theme}`
+
+</code></pre>
+<p>白話翻譯：</p>
+<p>&gt; 這是一種把變數塞進字串裡的寫法。</p>
+<h2>17. 條件 className</h2>
+<pre><code class="language-jsx">
+className={dark ? 'bg-slate-950 text-white' : 'bg-white text-slate-900'}
+
+</code></pre>
+<p>白話翻譯：</p>
+<p>&gt; 如果 dark 是 true，用前面那組 class；不然用後面那組。</p>
+<h2>18. children</h2>
+<p>在 layout 或共用容器裡，常會看到 <code>children</code>。</p>
+<p>白話翻譯：</p>
+<p>&gt; 被包在元件裡面的內容。</p>
+<h2>現在你要先接受一件事</h2>
+<p>看不懂這些語法很正常。</p>
+<p>真正有用的學法不是一次背完，而是：</p>
+<ol>
+<li>先知道它大概在幹嘛</li>
+<li>在專案裡反覆看到</li>
+<li>每次多懂一點</li>
+</ol>
+  </main>
+</body>
+</html>

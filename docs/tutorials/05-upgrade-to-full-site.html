@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>05. 從超簡單版升級到完整網站：你等一下會多學到什麼</title>
+  <style>
+    :root {
+      --page-width: 920px;
+      --text: #1f2937;
+      --muted: #5b6574;
+      --border: #d9e2ec;
+      --panel: #f8fafc;
+      --code: #0f172a;
+      --accent: #8b1f25;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 40px 24px 72px;
+      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      color: var(--text);
+      background: #ffffff;
+      line-height: 1.8;
+    }
+    main {
+      max-width: var(--page-width);
+      margin: 0 auto;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      line-height: 1.35;
+      margin: 1.5em 0 0.6em;
+      page-break-after: avoid;
+    }
+    h1 { font-size: 34px; color: var(--accent); margin-top: 0; }
+    h2 { font-size: 26px; border-top: 1px solid var(--border); padding-top: 24px; }
+    h3 { font-size: 20px; }
+    p, li { font-size: 15px; }
+    p { margin: 0 0 1em; }
+    ul, ol { margin: 0 0 1.2em 1.4em; padding: 0; }
+    li { margin: 0.35em 0; }
+    pre {
+      margin: 0 0 1.2em;
+      padding: 16px 18px;
+      overflow-x: auto;
+      background: var(--code);
+      color: #e2e8f0;
+      border-radius: 14px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    code {
+      font-family: "SFMono-Regular", "Menlo", monospace;
+      font-size: 0.92em;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 0.1em 0.35em;
+      border-radius: 6px;
+    }
+    pre code {
+      background: transparent;
+      border: 0;
+      padding: 0;
+      border-radius: 0;
+      color: inherit;
+    }
+    strong { font-weight: 700; }
+    @media print {
+      body { padding: 0; }
+      h2, h3 { page-break-after: avoid; }
+      pre, ul, ol { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>05. 從超簡單版升級到完整網站：你等一下會多學到什麼</h1>
+<h2>這篇目標</h2>
+<p>你現在已經做過：</p>
+<ul>
+<li>最小首頁</li>
+<li>最小第二頁</li>
+<li>最小按鈕互動</li>
+</ul>
+<p>接下來才要升級到真正的專案版本。</p>
+<h2>下一階段會多什麼</h2>
+<p>完整版會多出這些東西：</p>
+<ul>
+<li>全站共用 layout</li>
+<li>共用 Header / Footer</li>
+<li>四個正式頁面</li>
+<li>語言切換</li>
+<li>dark mode 狀態同步</li>
+<li>dropdown 導覽</li>
+<li>區塊進場動畫</li>
+<li>更完整的內容資料結構</li>
+</ul>
+<h2>你要先知道一件事</h2>
+<p>現在的正式專案不是「突然變複雜」，而是把你剛剛學過的東西放大：</p>
+<ul>
+<li>一個頁面，變成四個頁面</li>
+<li>一個按鈕狀態，變成全站共用狀態</li>
+<li>一個小區塊，變成整個 Header</li>
+</ul>
+<h2>升級地圖</h2>
+<ol>
+<li>先看 Next.js 專案結構</li>
+<li>再看 layout 與 globals.css</li>
+<li>再看 Header / Footer</li>
+<li>再看語言與主題切換</li>
+<li>最後再看 dropdown 和動畫</li>
+</ol>
+<p>這樣順序才不會炸掉。</p>
+<p>下一篇開始就是完整版系列。</p>
+  </main>
+</body>
+</html>

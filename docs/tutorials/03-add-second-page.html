@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>03. 加第二頁與最小導覽：先理解路由，不先做 dropdown</title>
+  <style>
+    :root {
+      --page-width: 920px;
+      --text: #1f2937;
+      --muted: #5b6574;
+      --border: #d9e2ec;
+      --panel: #f8fafc;
+      --code: #0f172a;
+      --accent: #8b1f25;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 40px 24px 72px;
+      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      color: var(--text);
+      background: #ffffff;
+      line-height: 1.8;
+    }
+    main {
+      max-width: var(--page-width);
+      margin: 0 auto;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      line-height: 1.35;
+      margin: 1.5em 0 0.6em;
+      page-break-after: avoid;
+    }
+    h1 { font-size: 34px; color: var(--accent); margin-top: 0; }
+    h2 { font-size: 26px; border-top: 1px solid var(--border); padding-top: 24px; }
+    h3 { font-size: 20px; }
+    p, li { font-size: 15px; }
+    p { margin: 0 0 1em; }
+    ul, ol { margin: 0 0 1.2em 1.4em; padding: 0; }
+    li { margin: 0.35em 0; }
+    pre {
+      margin: 0 0 1.2em;
+      padding: 16px 18px;
+      overflow-x: auto;
+      background: var(--code);
+      color: #e2e8f0;
+      border-radius: 14px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    code {
+      font-family: "SFMono-Regular", "Menlo", monospace;
+      font-size: 0.92em;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 0.1em 0.35em;
+      border-radius: 6px;
+    }
+    pre code {
+      background: transparent;
+      border: 0;
+      padding: 0;
+      border-radius: 0;
+      color: inherit;
+    }
+    strong { font-weight: 700; }
+    @media print {
+      body { padding: 0; }
+      h2, h3 { page-break-after: avoid; }
+      pre, ul, ol { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>03. 加第二頁與最小導覽：先理解路由，不先做 dropdown</h1>
+<h2>這篇目標</h2>
+<p>先學會最簡單的切頁。</p>
+<p>這一篇故意不先做 dropdown，因為你現在更需要先理解：</p>
+<p>&gt; 在 Next.js 裡，資料夾就是路由。</p>
+<h2>第一步：新增第二頁</h2>
+<p>你可以新增：</p>
+<pre><code class="language-text">
+app/about/page.js
+
+</code></pre>
+<p>內容先保持最簡單：</p>
+<pre><code class="language-jsx">
+export default function AboutPage() {
+
+  return (
+
+    &lt;main className="mx-auto max-w-5xl px-6 py-16"&gt;
+
+      &lt;h1 className="text-4xl font-semibold text-slate-900"&gt;關於這個課程&lt;/h1&gt;
+
+      &lt;p className="mt-4 text-slate-600"&gt;
+
+        這一頁只是先練習路由切換。
+
+      &lt;/p&gt;
+
+    &lt;/main&gt;
+
+  )
+
+}
+
+</code></pre>
+<h2>第二步：在首頁放連結</h2>
+<pre><code class="language-jsx">
+import Link from 'next/link'
+
+
+
+&lt;Link
+
+  href="/about"
+
+  className="inline-flex rounded-full bg-slate-200 px-5 py-3 font-medium text-slate-900"
+
+&gt;
+
+  看課程介紹
+
+&lt;/Link&gt;
+
+</code></pre>
+<h2>新手最容易卡的點</h2>
+<h3>為什麼不是 <code>&lt;a href="/about"&gt;</code></h3>
+<p>在 Next.js 裡，站內切換建議用 <code>Link</code>。</p>
+<p>因為它是框架提供的路由元件。</p>
+<h3><code>href="/about"</code> 是什麼</h3>
+<p>就是在說：</p>
+<p>&gt; 這個連結要帶你去 <code>/about</code></p>
+<h3><code>import Link from 'next/link'</code> 又是什麼</h3>
+<p>白話翻譯：</p>
+<p>&gt; 我要把 Next.js 內建的 Link 元件拿進來用。</p>
+<h2>完成後你應該看到什麼</h2>
+<ol>
+<li>首頁有一個連到第二頁的按鈕</li>
+<li>點下去可以切到 <code>/about</code></li>
+<li>你開始知道 Next.js 的路由其實是靠資料夾決定的</li>
+</ol>
+  </main>
+</body>
+</html>

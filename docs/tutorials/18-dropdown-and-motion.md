@@ -1,3 +1,10 @@
+# 18. 把網站做得更像正式成品：dropdown、切換、進場動畫
+
+## 先看 Header 裡的互動
+
+### src/components/header.jsx
+
+```jsx
 'use client'
 
 import Link from 'next/link'
@@ -97,3 +104,78 @@ export function Header() {
     </>
   )
 }
+```
+
+## 再看 RevealSection
+
+### src/components/reveal-section.jsx
+
+```jsx
+'use client'
+
+import { useEffect, useRef, useState } from 'react'
+
+export function RevealSection({ children, className = '', delay = 0 }) {
+  const ref = useRef(null)
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    const target = ref.current
+
+    if (!target) {
+      return undefined
+    }
+
+    if (!('IntersectionObserver' in window)) {
+      setVisible(true)
+      return undefined
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisible(true)
+            observer.unobserve(entry.target)
+          }
+        })
+      },
+      { threshold: 0.18 },
+    )
+
+    observer.observe(target)
+
+    return () => observer.disconnect()
+  }, [])
+
+  return (
+    <section
+      ref={ref}
+      className={`reveal-block ${visible ? 'is-visible' : ''} ${className}`.trim()}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {children}
+    </section>
+  )
+}
+```
+
+## 這裡的學習順序
+
+先理解三件事：
+
+1. 哪些東西需要 state
+2. 哪些互動只靠 CSS transition 就夠
+3. 哪些區塊需要等滾動到畫面裡再顯示
+
+## 新手最常看不懂的地方
+
+### `setMenuOpen((current) => !current)`
+
+這一行白話就是：
+
+> 把 current 拿來看一下，如果原本是開的就關掉，如果原本是關的就打開。
+
+### `items.map((item) => ...)`
+
+這就是把多個導覽項目逐一轉成畫面。

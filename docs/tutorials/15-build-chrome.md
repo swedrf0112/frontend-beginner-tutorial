@@ -1,3 +1,36 @@
+# 15. 建立全站外殼：Header、Footer、共用版面
+
+## 先看 SiteChrome
+
+### src/components/site-chrome.jsx
+
+```jsx
+'use client'
+
+import { usePathname } from 'next/navigation'
+import { Footer } from './footer'
+import { Header } from './header'
+
+export function SiteChrome({ children }) {
+  const pathname = usePathname()
+
+  return (
+    <div className="site-shell">
+      <Header />
+      <main key={pathname} className="page-transition shell-main">
+        {children}
+      </main>
+      <Footer />
+    </div>
+  )
+}
+```
+
+## 再看 Header
+
+### src/components/header.jsx
+
+```jsx
 'use client'
 
 import Link from 'next/link'
@@ -97,3 +130,37 @@ export function Header() {
     </>
   )
 }
+```
+
+## 再看 Footer
+
+### src/components/footer.jsx
+
+```jsx
+'use client'
+
+import { useSite } from './site-provider'
+
+export function Footer() {
+  const { content } = useSite()
+
+  return (
+    <footer className="mt-10 border-t border-slate-200/80 bg-slate-950 text-slate-300 dark:border-slate-800">
+      <div className="site-frame flex flex-col gap-2 py-8 text-sm md:flex-row md:items-center md:justify-between">
+        <span className="font-semibold tracking-wide">{content.footerBrand}</span>
+        <span>{content.footerLinks}</span>
+      </div>
+    </footer>
+  )
+}
+```
+
+## 這一步你要理解的事情
+
+不是每個頁面都自己寫一份導覽列。
+
+比較合理的做法是：
+
+- layout 負責外框
+- SiteChrome 負責共用殼
+- Header / Footer 各自只管自己的內容

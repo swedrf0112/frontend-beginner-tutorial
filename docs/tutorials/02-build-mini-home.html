@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>02. 先做一個最小首頁：只放標題、說明、按鈕</title>
+  <style>
+    :root {
+      --page-width: 920px;
+      --text: #1f2937;
+      --muted: #5b6574;
+      --border: #d9e2ec;
+      --panel: #f8fafc;
+      --code: #0f172a;
+      --accent: #8b1f25;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 40px 24px 72px;
+      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      color: var(--text);
+      background: #ffffff;
+      line-height: 1.8;
+    }
+    main {
+      max-width: var(--page-width);
+      margin: 0 auto;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      line-height: 1.35;
+      margin: 1.5em 0 0.6em;
+      page-break-after: avoid;
+    }
+    h1 { font-size: 34px; color: var(--accent); margin-top: 0; }
+    h2 { font-size: 26px; border-top: 1px solid var(--border); padding-top: 24px; }
+    h3 { font-size: 20px; }
+    p, li { font-size: 15px; }
+    p { margin: 0 0 1em; }
+    ul, ol { margin: 0 0 1.2em 1.4em; padding: 0; }
+    li { margin: 0.35em 0; }
+    pre {
+      margin: 0 0 1.2em;
+      padding: 16px 18px;
+      overflow-x: auto;
+      background: var(--code);
+      color: #e2e8f0;
+      border-radius: 14px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    code {
+      font-family: "SFMono-Regular", "Menlo", monospace;
+      font-size: 0.92em;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 0.1em 0.35em;
+      border-radius: 6px;
+    }
+    pre code {
+      background: transparent;
+      border: 0;
+      padding: 0;
+      border-radius: 0;
+      color: inherit;
+    }
+    strong { font-weight: 700; }
+    @media print {
+      body { padding: 0; }
+      h2, h3 { page-break-after: avoid; }
+      pre, ul, ol { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>02. 先做一個最小首頁：只放標題、說明、按鈕</h1>
+<h2>這篇目標</h2>
+<p>你先不要做完整官網。</p>
+<p>先做出一個很小、但真的能看到成果的首頁。只需要三樣東西：</p>
+<ul>
+<li>標題</li>
+<li>介紹文字</li>
+<li>按鈕</li>
+</ul>
+<h2>先把首頁想成普通函式</h2>
+<p>在 React 裡，一個頁面常常長這樣：</p>
+<pre><code class="language-jsx">
+export default function HomePage() {
+
+  return &lt;div&gt;首頁&lt;/div&gt;
+
+}
+
+</code></pre>
+<p>白話翻譯：</p>
+<ul>
+<li><code>function HomePage()</code>：建立一個元件</li>
+<li><code>return</code>：把畫面交出去</li>
+<li><code>&lt;div&gt;首頁&lt;/div&gt;</code>：這就是畫面內容</li>
+</ul>
+<h2>建議你先做成這樣</h2>
+<pre><code class="language-jsx">
+export default function HomePage() {
+
+  return (
+
+    &lt;main className="mx-auto max-w-5xl px-6 py-16"&gt;
+
+      &lt;section className="rounded-3xl bg-slate-900 p-10 text-white"&gt;
+
+        &lt;p className="text-sm uppercase tracking-[0.3em] text-sky-200"&gt;
+
+          Learning Studio
+
+        &lt;/p&gt;
+
+        &lt;h1 className="mt-4 text-4xl font-semibold"&gt;
+
+          用最簡單的方式開始學前端
+
+        &lt;/h1&gt;
+
+        &lt;p className="mt-4 max-w-2xl text-base text-slate-200"&gt;
+
+          先做出一個能看的首頁，再慢慢升級成完整網站。
+
+        &lt;/p&gt;
+
+        &lt;button className="mt-8 rounded-full bg-sky-400 px-6 py-3 font-medium text-slate-950"&gt;
+
+          開始閱讀
+
+        &lt;/button&gt;
+
+      &lt;/section&gt;
+
+    &lt;/main&gt;
+
+  )
+
+}
+
+</code></pre>
+<h2>語法拆解</h2>
+<h3><code>className</code> 是什麼</h3>
+<p>在 React 裡不是寫 <code>class</code>，而是寫 <code>className</code>。</p>
+<p>因為 <code>class</code> 在 JavaScript 裡本身就有其他用途。</p>
+<h3>為什麼畫面裡可以寫很多標籤</h3>
+<p>因為 JSX 讓你可以在 JavaScript 裡寫長得像 HTML 的語法。</p>
+<h3>為什麼外面包 <code>()</code></h3>
+<p>因為多行 JSX 通常會包在括號裡，方便閱讀。</p>
+<h2>完成後你應該看到什麼</h2>
+<p>你會先得到一個深色大區塊，裡面有品牌名、標題、說明和按鈕。這不是最終站，但它會讓你第一次清楚看到：</p>
+<p>&gt; 原來我真的有在改畫面。</p>
+  </main>
+</body>
+</html>
